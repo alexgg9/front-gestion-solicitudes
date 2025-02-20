@@ -1,79 +1,77 @@
 import API from "../api/api"; // Asegúrate de tener esta configuración en tu proyecto
 
-
-
-export const getCompanies = async () => {
+export const getProfessors = async () => {
     try {
         const token = localStorage.getItem("token");
-        const response = await API.get("/company", {
+        const response = await API.get("/professor", {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         });
         return response.data;
     } catch (error) {
-        console.error("Error al obtener las empresas:", error);
+        console.error("Error al obtener los profesores:", error);
         return []; 
     }
-};
+};  
 
-export const getCompanyById = async (id: number) => {
+export const getProfessorById = async (id: number) => {
     try {
         const token = localStorage.getItem("token");
-        const response = await API.get(`/company/${id}`, {
+        const response = await API.get(`/professor/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         });
         return response.data;
     } catch (error) {
-        console.error(`Error al obtener la empresa con ID ${id}:`, error);
+        console.error(`Error al obtener el profesor con ID ${id}:`, error);
         throw error;
     }
 };
 
-export const createCompany = async (companyData: any) => {
+export const createProfessor = async (professorData: any) => {
     try {
         const token = localStorage.getItem("token");
-        const response = await API.post("/company", companyData, {
+        const response = await API.post("/professor", professorData, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log("Empresa creada:", response.data);
+        console.log("Profesor creado:", response.data);
         return response.data;
     } catch (error) {
-        console.error("Error al crear la empresa:", error);
+        console.error("Error al crear el profesor:", error);
         throw error;
     }
 };
 
-export const updateCompany = async (id: number, companyData: any) => {
+export const updateProfessor = async (id: number, professorData: any) => {
     try {
         const token = localStorage.getItem("token");
-        const response = await API.put(`/company/${id}`, companyData, {
+        const response = await API.put(`/professor/${id}`, professorData, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         });
         return response.data;
     } catch (error) {
-        console.error(`Error al actualizar la empresa con ID ${id}:`, error);
+        console.error(`Error al actualizar el profesor con ID ${id}:`, error);
         throw error;
     }
 };
 
-export const deleteCompany = async (id: number) => {
+export const deleteProfessor = async (id: number) => {
     try {
         const token = localStorage.getItem("token");
-        const response = await API.delete(`/company/${id}`, {
+        const response = await API.delete(`/professor/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         });
         return response.data;
     } catch (error) {
-        console.error(`Error al eliminar la empresa con ID ${id}:`, error);
+        console.error(`Error al eliminar el profesor con ID ${id}:`, error);
         throw error;
     }
 };
