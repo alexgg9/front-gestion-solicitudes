@@ -64,7 +64,8 @@ const Navbar = () => {
                 <span>Empresas</span>
               </Link>
               <div className="relative">
-                <button className="flex items-center text-black hover:text-indigo-300 transition duration-300">
+                <button className="flex items-center text-white hover:text-indigo-300 transition duration-300"
+                onClick={() => navigate("/profile")} >
                   <img
                     src="src/assets/user.png"
                     alt="Perfil"
