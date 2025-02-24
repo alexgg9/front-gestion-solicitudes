@@ -1,5 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import { FaSignInAlt, FaUserPlus, FaSignOutAlt, FaClipboardList, FaBuilding } from "react-icons/fa";
+import {
+  FaSignInAlt,
+  FaUserPlus,
+  FaSignOutAlt,
+  FaClipboardList,
+  FaBuilding,
+} from "react-icons/fa";
 import { useState, useEffect } from "react";
 
 const Navbar = () => {
@@ -43,8 +49,14 @@ const Navbar = () => {
     <nav className="bg-white p-4">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <img  src="src/assets/solicitud.png" alt="Logo" className="w-10 h-10" />
-          <h1 className="text-black text-2xl font-semibold">Gestión de Solicitudes</h1>
+          <img
+            src="src/assets/solicitud.png"
+            alt="Logo"
+            className="w-10 h-10"
+          />
+          <h1 className="text-black text-2xl font-semibold">
+            Gestión de Solicitudes
+          </h1>
         </div>
         <div className="flex items-center space-x-6">
           {isLoggedIn ? (
@@ -57,14 +69,17 @@ const Navbar = () => {
                 <span>Solicitudes</span>
               </Link>
               <Link
-                to="/empresas"
+                to="/companies"
                 className="text-black hover:text-gray-300 flex items-center space-x-1 transition duration-300"
               >
                 <FaBuilding />
                 <span>Empresas</span>
               </Link>
               <div className="relative">
-                <button className="flex items-center text-black hover:text-indigo-300 transition duration-300">
+                <button
+                  className="flex items-center text-white hover:text-indigo-300 transition duration-300"
+                  onClick={() => navigate("/profile")}
+                >
                   <img
                     src="src/assets/user.png"
                     alt="Perfil"
@@ -76,8 +91,8 @@ const Navbar = () => {
                 onClick={handleLogout}
                 className="text-black  flex items-center space-x-1 hover:text-red-600 transition-color transition duration-300"
               >
-                <FaSignOutAlt/>
-                <span >Log Out</span>
+                <FaSignOutAlt />
+                <span>Log Out</span>
               </button>
             </>
           ) : (
