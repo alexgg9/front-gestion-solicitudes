@@ -1,18 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
-import {
-  FaSignInAlt,
-  FaUserPlus,
-  FaSignOutAlt,
-  FaClipboardList,
-  FaBuilding,
-} from "react-icons/fa";
+import {FaSignOutAlt, FaClipboardList, FaBuilding} from "react-icons/fa";
 import { useState, useEffect } from "react";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-  // Verifica si el token está presente en el localStorage al cargar el componente y cada vez que cambia
+  
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -21,7 +15,7 @@ const Navbar = () => {
       setIsLoggedIn(false);
     }
 
-    // Se ejecuta cada vez que cambia el localStorage
+    
     const storageListener = () => {
       const token = localStorage.getItem("token");
       if (token) {
@@ -33,7 +27,7 @@ const Navbar = () => {
 
     window.addEventListener("storage", storageListener);
 
-    // Limpiar el listener cuando el componente se desmonta
+    
     return () => {
       window.removeEventListener("storage", storageListener);
     };
@@ -41,9 +35,13 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setIsLoggedIn(false); // Actualiza el estado de autenticación
+    setIsLoggedIn(false); 
     navigate("/login");
   };
+
+  const handleClick = () => {
+    navigate("/searchNif");
+  };  
 
   return (
     <nav className="bg-white p-4">
@@ -97,20 +95,16 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Link
-                to="/login"
-                className="text-black hover:text-gray-500 flex items-center space-x-1 transition duration-300"
+              <button
+                onClick={handleClick} 
+                className="px-5 py-2.5 relative rounded group text-white inline-block"
               >
-                <FaSignInAlt />
-                <span>Iniciar sesión</span>
-              </Link>
-              <Link
-                to="/register"
-                className="text-black hover:text-gray-500 flex items-center space-x-1 transition duration-300"
-              >
-                <FaUserPlus />
-                <span>Registrarse</span>
-              </Link>
+                <span className="absolute top-0 left-0 w-full h-full rounded opacity-50 filter blur-sm bg-gradient-to-br from-purple-600 to-blue-500"></span>
+                <span className="h-full w-full inset-0 absolute mt-0.5 ml-0.5 bg-gradient-to-br filter group-active:opacity-0 rounded opacity-50 from-purple-600 to-blue-500"></span>
+                <span className="absolute inset-0 w-full h-full transition-all duration-200 ease-out rounded shadow-xl bg-gradient-to-br filter group-active:opacity-0 group-hover:blur-sm from-purple-600 to-blue-500"></span>
+                <span className="absolute inset-0 w-full h-full transition duration-200 ease-out rounded bg-gradient-to-br to-purple-600 from-blue-500"></span>
+                <span className="relative">Solicita Alumnado</span>
+              </button>
             </>
           )}
         </div>

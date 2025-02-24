@@ -75,3 +75,19 @@ export const deleteCompany = async (id: number) => {
     throw error;
   }
 };
+
+
+export const getCompanyByNif = async (nif: string) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await API.get(`/company/${nif}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`Error al obtener la empresa con NIF ${nif}:`, error);
+    throw error;
+  }
+}
