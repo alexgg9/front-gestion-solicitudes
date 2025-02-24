@@ -62,7 +62,7 @@ const SearchNif: React.FC = () => {
         toast.error("No se pudo crear la solicitud. Intente de nuevo.");
       }
     } catch (err) {
-      console.error("Error:", err); // Log error
+      console.error("Error:", err); 
       setError("Error al crear la solicitud.");
       toast.error("Error al crear la solicitud.");
     }
