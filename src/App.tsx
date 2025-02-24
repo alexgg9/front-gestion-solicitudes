@@ -6,8 +6,7 @@ import Dashboard from "./components/Dashboard";
 import ApplicationDashboard from "./pages/ApplicationsDashboard";
 import LandingPage from "./pages/LandingPage";
 import ProfilePage from "./pages/ProfilePage";
-
-
+import CompanyDashboard from "./pages/CompanyDashboard";
 
 function App() {
   return (
@@ -21,6 +20,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/applications" element={<ApplicationDashboard />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/companies" element={<CompanyDashboard />} />
         </Routes>
       </div>
     </Router>
