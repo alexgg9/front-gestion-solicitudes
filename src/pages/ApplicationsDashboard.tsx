@@ -3,6 +3,7 @@ import { getApplications, deleteApplication, createApplication, updateApplicatio
 import { getCompanies } from "../services/CompaniesService";
 import { Application, Company } from "../types/ApplicationType";
 import ApplicationForm from "../components/ApplicationForm";
+import { FiEdit, FiTrash2 } from "react-icons/fi"; // Importando los iconos
 
 const initialFormData: Application = {
   id: 0,
@@ -22,9 +23,11 @@ const initialFormData: Application = {
 
 const ApplicationDashboard = () => {
   const [applications, setApplications] = useState<Application[]>([]);
-  const [companies, setCompanies] = useState<Company[]>([]);
+  const [, setCompanies] = useState<Company[]>([]);
   const [formData, setFormData] = useState<Application>(initialFormData);
   const [editing, setEditing] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1); 
+  const [applicationsPerPage] = useState(5); 
 
   useEffect(() => {
     fetchApplications();
@@ -83,10 +86,24 @@ const ApplicationDashboard = () => {
     }
   };
 
+  // Determina las solicitudes que deben mostrarse según la página actual
+  const indexOfLastApplication = currentPage * applicationsPerPage;
+  const indexOfFirstApplication = indexOfLastApplication - applicationsPerPage;
+  const currentApplications = applications.slice(indexOfFirstApplication, indexOfLastApplication);
+
+  // Cambia de página
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  // Calcular el número total de páginas
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(applications.length / applicationsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
   return (
     <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-md mt-6">
       <h2 className="text-3xl font-bold mb-4">Gestión de Solicitudes</h2>
-  
+
       {/* Contenedor de dos columnas: Formulario y Tabla */}
       <div className="grid grid-cols-2 gap-6 items-start">
         
@@ -96,7 +113,6 @@ const ApplicationDashboard = () => {
             formData={formData} 
             setFormData={setFormData} 
             handleSubmit={handleSubmit} 
-            companies={companies} 
             editing={editing} 
           />
         </div>
@@ -114,24 +130,65 @@ const ApplicationDashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {applications.map((app) => (
+              {currentApplications.map((app) => (
                 <tr key={app.id} className="border-b hover:bg-gray-50">
                   <td className="px-6 py-4">{app.company_name}</td>
                   <td className="px-6 py-4">{app.company_activity}</td>
                   <td className="px-6 py-4">{app.smr_1 + app.smr_2 + app.dam_1 + app.dam_2 + app.daw_1 + app.daw_2}</td>
-                  <td className="px-6 py-4">
-                    <button onClick={() => handleEdit(app)} className="text-blue-500 hover:text-blue-700 mr-2">Editar</button>
-                    <button onClick={() => handleDelete(app.id)} className="text-red-500 hover:text-red-700">Eliminar</button>
+                  <td className="px-6 py-4 flex space-x-3">
+                    {/* Botón Editar con icono */}
+                    <button 
+                      onClick={() => handleEdit(app)} 
+                      className="text-blue-500 hover:text-blue-700 p-2 rounded-full transition-all" 
+                      title="Editar"
+                    >
+                      <FiEdit size={20} />
+                    </button>
+                    {/* Botón Eliminar con icono */}
+                    <button 
+                      onClick={() => handleDelete(app.id)} 
+                      className="text-red-500 hover:text-red-700 p-2 rounded-full transition-all" 
+                      title="Eliminar"
+                    >
+                      <FiTrash2 size={20} />
+                    </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+
+          {/* Paginación */}
+          <div className="mt-4 flex justify-center space-x-4">
+            <button 
+              onClick={() => setCurrentPage(currentPage - 1)} 
+              disabled={currentPage === 1}
+              className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded disabled:bg-gray-300"
+            >
+              Anterior
+            </button>
+            {pageNumbers.map((number) => (
+              <button
+                key={number}
+                onClick={() => paginate(number)}
+                className={`px-4 py-2 text-sm font-medium rounded ${currentPage === number ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'} hover:bg-blue-600`}
+              >
+                {number}
+              </button>
+            ))}
+            <button 
+              onClick={() => setCurrentPage(currentPage + 1)} 
+              disabled={currentPage === pageNumbers.length}
+              className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded disabled:bg-gray-300"
+            >
+              Siguiente
+            </button>
+          </div>
         </div>
   
       </div>
     </div>
-  );  
+  );
 };
 
 export default ApplicationDashboard;

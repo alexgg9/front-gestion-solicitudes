@@ -55,9 +55,15 @@ export const updateProfessor = async (id: number, professorData: any) => {
             },
         });
         return response.data;
-    } catch (error) {
-        console.error(`Error al actualizar el profesor con ID ${id}:`, error);
-        throw error;
+    } catch (error: any) {
+        if (error.response) {
+            // Mostrar los detalles del error (por ejemplo, validaciones específicas del backend)
+            console.error('Error al actualizar el profesor:', error.response.data);
+            throw error.response.data; // Puedes lanzar estos detalles si los necesitas en otro lugar
+        } else {
+            console.error('Error desconocido:', error);
+            throw error;
+        }
     }
 };
 

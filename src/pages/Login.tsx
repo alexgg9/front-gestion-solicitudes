@@ -15,6 +15,7 @@ const Login = () => {
     try {
       const response = await API.post("/login", { email, password });
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("professorId", response.data.professor_id);
       navigate("/dashboard");
       window.dispatchEvent(new Event("storage"));
     } catch (err) {
@@ -69,7 +70,7 @@ const Login = () => {
                 name="email"
                 id="email"
                 className="pl-12 mb-2 bg-gray-50 text-gray-600 border focus:border-transparent border-gray-300 sm:text-sm rounded-lg ring-3 ring-transparent focus:ring-1 focus:outline-none focus:ring-gray-400 block w-full p-2.5 py-3 px-4"
-                placeholder="nombre@empresa.com"
+                placeholder="Correo electrónico"
                 autoComplete="off"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}

@@ -1,9 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import {FaSignOutAlt, FaClipboardList, FaBuilding} from "react-icons/fa";
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   
@@ -35,6 +37,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("professorId");
     setIsLoggedIn(false); 
     navigate("/login");
   };
@@ -94,9 +97,9 @@ const Navbar = () => {
               </button>
             </>
           ) : (
-            <>
+            location.pathname !== "/searchNif" && (
               <button
-                onClick={handleClick} 
+                onClick={handleClick}
                 className="px-5 py-2.5 relative rounded group text-white inline-block"
               >
                 <span className="absolute top-0 left-0 w-full h-full rounded opacity-50 filter blur-sm bg-gradient-to-br from-purple-600 to-blue-500"></span>
@@ -105,7 +108,7 @@ const Navbar = () => {
                 <span className="absolute inset-0 w-full h-full transition duration-200 ease-out rounded bg-gradient-to-br to-purple-600 from-blue-500"></span>
                 <span className="relative">Solicita Alumnado</span>
               </button>
-            </>
+            )
           )}
         </div>
       </div>
