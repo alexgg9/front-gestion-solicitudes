@@ -24,11 +24,11 @@ const SearchNif: React.FC = () => {
   const [nif, setNif] = useState<string>("");
   const [company, setCompany] = useState<Company | null>(null);
   const [formData, setFormData] = useState<Application>(initialFormData);
-  const [successMessage, setSuccessMessage] = useState<string>("");
-  const [error, setError] = useState<string>("");
 
   // Maneja los cambios en los campos del formulario
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -38,42 +38,26 @@ const SearchNif: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSuccessMessage("");
-    setError("");
-  
+
     try {
-      console.log("Formulario:", formData);
-  
       const response = await createApplication(formData);
-      console.log("Response from createApplication:", response); 
-  
+
       if (response.success === true) {
         toast.success("¡Solicitud creada con éxito!");
-        setSuccessMessage("Solicitud creada con éxito.");
         setFormData(initialFormData);
         setCompany(null);
-        setNif(""); 
-  
-        setTimeout(() => {
-          setSuccessMessage(""); 
-        }, 2000);
+        setNif("");
       } else {
-        setError("No se pudo crear la solicitud. Intente de nuevo.");
         toast.error("No se pudo crear la solicitud. Intente de nuevo.");
       }
     } catch (err) {
-      console.error("Error:", err); 
-      setError("Error al crear la solicitud.");
+      console.error("Error:", err);
       toast.error("Error al crear la solicitud.");
     }
   };
-  
-  
 
-  // Maneja la búsqueda de la empresa por NIF
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
 
     try {
       const companyData = await getCompanyByNif(nif);
@@ -91,15 +75,21 @@ const SearchNif: React.FC = () => {
           company_name: company.name,
           company_activity: company.activity || "",
         });
+
+        // Mostrar notificación de éxito
+        toast.success("Empresa encontrada con éxito.");
       } else {
-        setError("No se encontró ninguna empresa con ese NIF.");
         toast.error("No se encontró ninguna empresa con ese NIF.");
       }
     } catch (err) {
-      setError("Error al buscar la empresa. Por favor, intente de nuevo.");
       toast.error("Error al buscar la empresa. Por favor, intente de nuevo.");
     }
   };
+
+  const handleGoHome = () => {
+    window.location.href = "/";
+  }
+
 
   return (
     <div className="flex justify-center items-start h-screen bg-white px-4 sm:px-6 lg:px-8">
@@ -118,7 +108,6 @@ const SearchNif: React.FC = () => {
               required
             />
           </div>
-          {error && <p className="text-red-500 text-xs">{error}</p>}
           <div className="flex justify-center">
             <button
               type="submit"
@@ -128,6 +117,13 @@ const SearchNif: React.FC = () => {
             </button>
           </div>
         </form>
+
+        <button
+          onClick={handleGoHome}
+          className="w-full py-2 bg-gray-600 text-white text-sm font-semibold rounded-md hover:bg-gray-700 transition-all duration-200"
+        >
+          Volver al Inicio
+        </button>
       </div>
 
       {/* Columna de formulario (solo se muestra si hay empresa encontrada) */}
@@ -222,9 +218,6 @@ const SearchNif: React.FC = () => {
                 />
               </div>
             </div>
-
-            {/* Mensaje de éxito después de enviar */}
-            {successMessage && <p className="text-green-500 text-xs mt-3">{successMessage}</p>}
 
             {/* Botón de acción */}
             <button

@@ -1,3 +1,5 @@
+// ProfileForm.tsx
+
 import { Professor } from "../types/ProfessorType";
 
 interface Props {
@@ -6,7 +8,7 @@ interface Props {
   handleSubmit: (e: React.FormEvent) => void;
 }
 
-const ProfessorForm = ({ formData, setFormData, handleSubmit }: Props) => {
+const ProfileForm = ({ formData, setFormData, handleSubmit }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -20,17 +22,6 @@ const ProfessorForm = ({ formData, setFormData, handleSubmit }: Props) => {
       <h3 className="text-xl font-semibold">Editar Profesor</h3>
       <div className="grid grid-cols-2 gap-4 mt-4">
         <div>
-          <label className="block text-sm font-medium">DNI</label>
-          <input
-            type="text"
-            name="dni"
-            value={formData.dni}
-            onChange={handleChange}
-            className="border p-2 rounded w-full"
-
-          />
-        </div>
-        <div>
           <label className="block text-sm font-medium">Nombre</label>
           <input
             type="text"
@@ -38,7 +29,6 @@ const ProfessorForm = ({ formData, setFormData, handleSubmit }: Props) => {
             value={formData.name}
             onChange={handleChange}
             className="border p-2 rounded w-full"
-
           />
         </div>
         <div>
@@ -49,7 +39,6 @@ const ProfessorForm = ({ formData, setFormData, handleSubmit }: Props) => {
             value={formData.surname}
             onChange={handleChange}
             className="border p-2 rounded w-full"
-
           />
         </div>
         <div>
@@ -60,18 +49,6 @@ const ProfessorForm = ({ formData, setFormData, handleSubmit }: Props) => {
             value={formData.email}
             onChange={handleChange}
             className="border p-2 rounded w-full"
-
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Contraseña</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className="border p-2 rounded w-full"
-            required
           />
         </div>
         <div>
@@ -82,7 +59,6 @@ const ProfessorForm = ({ formData, setFormData, handleSubmit }: Props) => {
             value={formData.phone}
             onChange={handleChange}
             className="border p-2 rounded w-full"
-
           />
         </div>
         <div>
@@ -92,10 +68,9 @@ const ProfessorForm = ({ formData, setFormData, handleSubmit }: Props) => {
             value={formData.department}
             onChange={handleChange}
             className="border p-2 rounded w-full"
-
           >
             <option value="">Selecciona un departamento</option>
-            <option value="Informatica">Informática</option>
+            <option value="Informática">Informática</option>
             <option value="Idiomas">Idiomas</option>
           </select>
         </div>
@@ -107,4 +82,4 @@ const ProfessorForm = ({ formData, setFormData, handleSubmit }: Props) => {
   );
 };
 
-export default ProfessorForm;
+export default ProfileForm;
