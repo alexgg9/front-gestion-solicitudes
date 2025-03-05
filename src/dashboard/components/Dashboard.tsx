@@ -5,7 +5,7 @@ const Dashboard = () => {
         {/* Logo del instituto */}
         <div className="flex justify-center mb-8">
           <img 
-            src="src/assets/logo.png"
+            src="logo.png"
             alt="Logo IES Francisco de los Ríos"
             className="h-28 transition-transform duration-300 hover:scale-105"
           />
