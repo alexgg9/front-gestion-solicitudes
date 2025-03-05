@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { getCompanyByNif } from "../services/CompaniesService";
 import toast from "react-hot-toast";
 import { Application, Company } from "../types/ApplicationType";
-import { createApplication } from "../services/ApplicationService"; 
+import { createApplication } from "../services/ApplicationService";
 
 const initialFormData: Application = {
   id: 0,
@@ -39,8 +39,26 @@ const SearchNif: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Validar campos obligatorios
+    if (!formData.company_id || !formData.nif || !formData.company_name || !formData.company_activity || !formData.modality) {
+      toast.error("Por favor, complete todos los campos obligatorios.");
+      return;
+    }
+
+    const formattedData = {
+      ...formData,
+      smr_1: Number(formData.smr_1),
+      smr_2: Number(formData.smr_2),
+      dam_1: Number(formData.dam_1),
+      dam_2: Number(formData.dam_2),
+      daw_1: Number(formData.daw_1),
+      daw_2: Number(formData.daw_2),
+    };
+
+    console.log("Datos enviados:", formattedData);
+
     try {
-      const response = await createApplication(formData);
+      const response = await createApplication(formattedData);
 
       if (response.success === true) {
         toast.success("¡Solicitud creada con éxito!");
@@ -51,8 +69,13 @@ const SearchNif: React.FC = () => {
         toast.error("No se pudo crear la solicitud. Intente de nuevo.");
       }
     } catch (err) {
-      console.error("Error:", err);
-      toast.error("Error al crear la solicitud.");
+      if (err instanceof Error) {
+        console.error("Error:", (err as any).response?.data);
+        toast.error("Error al crear la solicitud: " + (err as any).response?.data?.message);
+      } else {
+        console.error("Error:", err);
+        toast.error("Error desconocido al crear la solicitud.");
+      }
     }
   };
 
@@ -88,8 +111,7 @@ const SearchNif: React.FC = () => {
 
   const handleGoHome = () => {
     window.location.href = "/";
-  }
-
+  };
 
   return (
     <div className="flex justify-center items-start h-screen bg-white px-4 sm:px-6 lg:px-8">
