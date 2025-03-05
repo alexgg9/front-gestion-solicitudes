@@ -1,5 +1,3 @@
-// ProfileForm.tsx
-
 import { Professor } from "../types/ProfessorType";
 
 interface Props {
@@ -26,7 +24,7 @@ const ProfileForm = ({ formData, setFormData, handleSubmit }: Props) => {
           <input
             type="text"
             name="name"
-            value={formData.name}
+            value={formData.name || ''}
             onChange={handleChange}
             className="border p-2 rounded w-full"
           />
@@ -36,7 +34,7 @@ const ProfileForm = ({ formData, setFormData, handleSubmit }: Props) => {
           <input
             type="text"
             name="surname"
-            value={formData.surname}
+            value={formData.surname || ''}
             onChange={handleChange}
             className="border p-2 rounded w-full"
           />
@@ -46,7 +44,7 @@ const ProfileForm = ({ formData, setFormData, handleSubmit }: Props) => {
           <input
             type="email"
             name="email"
-            value={formData.email}
+            value={formData.email || ''}
             onChange={handleChange}
             className="border p-2 rounded w-full"
           />
@@ -56,7 +54,7 @@ const ProfileForm = ({ formData, setFormData, handleSubmit }: Props) => {
           <input
             type="text"
             name="phone"
-            value={formData.phone}
+            value={formData.phone || ''}
             onChange={handleChange}
             className="border p-2 rounded w-full"
           />
@@ -65,7 +63,7 @@ const ProfileForm = ({ formData, setFormData, handleSubmit }: Props) => {
           <label className="block text-sm font-medium">Departamento</label>
           <select
             name="department"
-            value={formData.department}
+            value={formData.department || ''}
             onChange={handleChange}
             className="border p-2 rounded w-full"
           >

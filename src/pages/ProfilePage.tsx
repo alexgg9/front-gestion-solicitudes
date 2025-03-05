@@ -1,24 +1,13 @@
-// ProfilePage.tsx
-
 import { useState, useEffect } from "react";
 import { Professor } from "../types/ProfessorType";
 import { toast } from "react-hot-toast";
 import ProfileForm from "../forms/ProfileForm";
 import { getProfessorById, updateProfessor } from "../services/ProfessorsService";
 
-const initialFormData: Professor = {
-  id: 0,
-  name: "",
-  surname: "",
-  email: "",
-  phone: "",
-  department: "",
-};
-
 const ProfilePage = () => {
-  const [formData, setFormData] = useState<Professor>(initialFormData);
-  const [editing, setEditing] = useState(false);
+  const [formData, setFormData] = useState<Professor | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchProfessor();
@@ -28,25 +17,33 @@ const ProfilePage = () => {
     const professorId = localStorage.getItem("professorId");
     if (!professorId) {
       setError("Profesor no encontrado.");
+      setLoading(false);
       return;
     }
 
     try {
       const response = await getProfessorById(Number(professorId));
+      console.log("Response:", response);
+
       if (response.data) {
-        setFormData(response.data);
-        setEditing(true);
+        setFormData({
+          ...response.data,
+          surname: response.data.surmane || response.data.surname || "", 
+        });
       } else {
         setError("No se pudo cargar los datos del profesor.");
       }
     } catch (error) {
       console.error("Error al obtener los datos del profesor:", error);
       setError("Error al cargar los datos del profesor.");
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData) return;
 
     const dataToUpdate: Partial<Professor> = {
       name: formData.name,
@@ -60,9 +57,7 @@ const ProfilePage = () => {
 
     try {
       await updateProfessor(formData.id, dataToUpdate);
-      setEditing(false);
-      fetchProfessor(); 
-
+      setFormData(dataToUpdate as Professor); 
       toast.success("Profesor actualizado con éxito!");
     } catch (error) {
       console.error("Error al actualizar los datos:", error);
@@ -70,6 +65,10 @@ const ProfilePage = () => {
       toast.error("No se pudo actualizar los datos.");
     }
   };
+
+  if (loading) {
+    return <div className="text-center text-xl">Cargando datos...</div>;
+  }
 
   if (error) {
     return (
@@ -90,7 +89,7 @@ const ProfilePage = () => {
       <h2 className="text-3xl font-bold mb-4">Formulario de Profesor</h2>
       <div className="grid grid-cols-1 gap-6 items-start">
         <div className="bg-gray-100 p-4 rounded-lg">
-          {editing ? (
+          {formData ? (
             <ProfileForm
               formData={formData}
               setFormData={setFormData}
