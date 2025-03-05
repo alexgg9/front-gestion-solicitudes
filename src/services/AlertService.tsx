@@ -5,7 +5,7 @@ class AlertService {
   static async confirmDelete(): Promise<boolean> {
     const result = await Swal.fire({
       title: "¿Estás seguro?",
-      text: "¡No podrás revertir esto!",
+      text: "El registro se borrará de forma permanente.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
