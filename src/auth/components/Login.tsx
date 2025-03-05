@@ -1,7 +1,8 @@
 import { useState } from "react";
-import API from "../api/api";
+import API from "../../api/api";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { Toaster, toast } from "react-hot-toast";
 
 //Login
 const Login = () => {
@@ -16,14 +17,18 @@ const Login = () => {
       const response = await API.post("/login", { email, password });
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("professorId", response.data.professor_id);
+      toast.success("Inicio de sesión correcto");
       navigate("/dashboard");
       window.dispatchEvent(new Event("storage"));
     } catch (err) {
       setError("Credenciales incorrectas");
+      toast.error("Credenciales incorrectas");
     }
   };
 
   return (
+    <>
+    <Toaster />
     <div className="flex items-center justify-center min-h-screen bg-white">
       <div className="flex flex-col w-full md:w-1/2 xl:w-2/5 2xl:w-2/5 3xl:w-1/3 mx-auto p-8 md:p-10 2xl:p-12 3xl:p-14 bg-white rounded-2xl shadow-xl">
         <div className="flex flex-row gap-3 pb-4">
@@ -135,6 +140,7 @@ const Login = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 

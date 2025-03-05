@@ -1,6 +1,9 @@
 import { useState } from "react";
-import API from "../api/api";
+import API from "../../api/api";
 import { Link } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
 
 const Register = () => {
     const [name, setName] = useState("");
@@ -8,20 +11,24 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const navigate = useNavigate();
 
     const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             await API.post("/register", { name, email, password });
+            toast.success("Registro exitoso. Ahora puedes iniciar sesión.");
             setSuccess("Registro exitoso. Ahora puedes iniciar sesión.");
-            setError("");
+            navigate("/login");
         } catch (err) {
             setError("Error al registrar. Inténtalo de nuevo.");
-            setSuccess("");
+            toast.error("Error al registrar. Inténtalo de nuevo.");
         }
     };
 
     return (
+        <>
+        <Toaster />
         <div className="flex items-center justify-center min-h-screen bg-white">
             <div className="flex flex-col w-full md:w-1/2 xl:w-2/5 2xl:w-2/5 3xl:w-1/3 mx-auto p-8 md:p-10 2xl:p-12 3xl:p-14 bg-white rounded-2xl shadow-xl">
                 <div className="flex flex-row gap-3 pb-4">
@@ -96,6 +103,7 @@ const Register = () => {
                 </form>
             </div>
         </div>
+        </>
     );
 };
 

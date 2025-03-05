@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Professor } from "../types/ProfessorType";
 import { toast } from "react-hot-toast";
-import ProfileForm from "../components/ProfileForm";
+import ProfileForm from "../forms/ProfileForm";
 import { getProfessorById, updateProfessor } from "../services/ProfessorsService";
 
 const initialFormData: Professor = {
@@ -34,7 +34,6 @@ const ProfilePage = () => {
     try {
       const response = await getProfessorById(Number(professorId));
       if (response.data) {
-        // Se actualiza formData solo si los datos existen
         setFormData(response.data);
         setEditing(true);
       } else {
@@ -62,7 +61,7 @@ const ProfilePage = () => {
     try {
       await updateProfessor(formData.id, dataToUpdate);
       setEditing(false);
-      fetchProfessor(); // Recarga los datos después de la actualización
+      fetchProfessor(); 
 
       toast.success("Profesor actualizado con éxito!");
     } catch (error) {

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { getApplications, deleteApplication, createApplication, updateApplication } from "../services/ApplicationService";
-import { getCompanies } from "../services/CompaniesService";
-import { Application, Company } from "../types/ApplicationType";
-import ApplicationForm from "../components/ApplicationForm";
-import { FiEdit, FiTrash2 } from "react-icons/fi"; // Importando los iconos
+import { getApplications, deleteApplication, createApplication, updateApplication } from "../../services/ApplicationService";
+import { getCompanies } from "../../services/CompaniesService";
+import { Application, Company } from "../../types/ApplicationType";
+import ApplicationForm from "../../forms/ApplicationForm";
+import { FiEdit, FiTrash2 } from "react-icons/fi"; 
+import AlertService from "../../services/AlertService";
 
 const initialFormData: Application = {
   id: 0,
@@ -54,7 +55,8 @@ const ApplicationDashboard = () => {
   };
 
   const handleDelete = async (id: number) => {
-    if (window.confirm("¿Seguro que deseas eliminar esta aplicación?")) {
+    const confirmed = await AlertService.confirmDelete();
+    if (confirmed) {
       try {
         await deleteApplication(id);
         setApplications(applications.filter((app) => app.id !== id));

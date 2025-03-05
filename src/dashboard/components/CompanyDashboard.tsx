@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import ReactPaginate from "react-paginate";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import {
   getCompanies,
   deleteCompany,
   createCompany,
   updateCompany,
-} from "../services/CompaniesService";
-import { Company } from "../types/CompanyType";
-import CompanyForm from "../components/CompanyForm";
+} from "../../services/CompaniesService";
+import { Company } from "../../types/CompanyType";
+import CompanyForm from "../../forms/CompanyForm";
+import AlertService from "../../services/AlertService";
 
 const initialFormData: Company = {
   id: 0,
@@ -30,8 +30,8 @@ const CompanyDashboard = () => {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [formData, setFormData] = useState<Company>(initialFormData);
   const [editing, setEditing] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
 
   useEffect(() => {
     fetchCompanies();
@@ -47,7 +47,9 @@ const CompanyDashboard = () => {
   };
 
   const handleDelete = async (id: number) => {
-    if (window.confirm("¿Seguro que deseas eliminar esta empresa?")) {
+    const confirmed = await AlertService.confirmDelete(); 
+
+    if (confirmed) {
       try {
         await deleteCompany(id);
         setCompanies(companies.filter((company) => company.id !== id));
@@ -89,14 +91,16 @@ const CompanyDashboard = () => {
     }
   };
 
-  // Paginación
-  const pageCount = Math.ceil(companies.length / itemsPerPage);
-  const offset = currentPage * itemsPerPage;
-  const currentCompanies = companies.slice(offset, offset + itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentCompanies = companies.slice(indexOfFirstItem, indexOfLastItem);
 
-  const handlePageClick = ({ selected }: { selected: number }) => {
-    setCurrentPage(selected);
-  };
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(companies.length / itemsPerPage); i++) {
+    pageNumbers.push(i);
+  }
 
   return (
     <div className="max-w-screen-xl mx-auto p-8 bg-white rounded-lg shadow-lg mt-6">
@@ -152,21 +156,33 @@ const CompanyDashboard = () => {
           </div>
 
           {/* Paginación */}
-          <ReactPaginate
-            previousLabel={"Anterior"}
-            nextLabel={"Siguiente"}
-            breakLabel={"..."}
-            pageCount={pageCount}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={3}
-            onPageChange={handlePageClick}
-            containerClassName={"flex justify-center mt-6 space-x-2"}
-            pageClassName={"border px-3 py-1 rounded-md cursor-pointer"}
-            activeClassName={"bg-blue-500 text-white"}
-            previousClassName={"border px-3 py-1 rounded-md cursor-pointer"}
-            nextClassName={"border px-3 py-1 rounded-md cursor-pointer"}
-            disabledClassName={"opacity-50 cursor-not-allowed"}
-          />
+          <div className="mt-4 flex justify-center space-x-4">
+            <button
+              onClick={() => setCurrentPage(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded disabled:bg-gray-300"
+            >
+              Anterior
+            </button>
+            {pageNumbers.map((number) => (
+              <button
+                key={number}
+                onClick={() => paginate(number)}
+                className={`px-4 py-2 text-sm font-medium rounded ${
+                  currentPage === number ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"
+                } hover:bg-blue-600`}
+              >
+                {number}
+              </button>
+            ))}
+            <button
+              onClick={() => setCurrentPage(currentPage + 1)}
+              disabled={currentPage === pageNumbers.length}
+              className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded disabled:bg-gray-300"
+            >
+              Siguiente
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Dashboard from "./components/Dashboard";
-import ApplicationDashboard from "./pages/ApplicationsDashboard";
+import Login from "./auth/components/Login";
+import Register from "./auth/components/Register";
+import Dashboard from "./dashboard/components/Dashboard";
+import ApplicationDashboard from "./dashboard/components/ApplicationsDashboard";
 import LandingPage from "./pages/LandingPage";
 import ProfilePage from "./pages/ProfilePage";
-import CompanyDashboard from "./pages/CompanyDashboard";
+import CompanyDashboard from "./dashboard/components/CompanyDashboard";
 import SearchNif from "./components/SearchNif";
 import { Toaster } from "react-hot-toast";
 
