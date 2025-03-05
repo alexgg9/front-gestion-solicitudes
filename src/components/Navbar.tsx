@@ -51,7 +51,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <img
-            src="src/assets/solicitud.png"
+            src="/src/assets/solicitud.png"
             alt="Logo"
             className="w-10 h-10"
           />
