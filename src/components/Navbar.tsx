@@ -51,7 +51,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <img
-            src="/src/assets/solicitud.png"
+            src="solicitud.png"
             alt="Logo"
             className="w-10 h-10"
           />
@@ -82,7 +82,7 @@ const Navbar = () => {
                   onClick={() => navigate("/profile")}
                 >
                   <img
-                    src="src/assets/user.png"
+                    src="user.png"
                     alt="Perfil"
                     className="w-10 h-10 rounded-full border-2 border-black"
                   />
